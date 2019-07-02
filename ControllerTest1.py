@@ -1,5 +1,4 @@
 import pyvisa as visa
-import gpib
 visa.log_to_screen()
 
 rm = visa.ResourceManager()
