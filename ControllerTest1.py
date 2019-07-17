@@ -1,28 +1,53 @@
 import pyvisa as visa
-visa.log_to_screen()
+import time
+visa.log_to_screen() #allows user to see the backend calls being made to the pyvisa class
 
-rm = visa.ResourceManager()
 visa.ResourceManager('@py') #creates t2he backend of library in case it wasn't already created
+rm = visa.ResourceManager()
+print(rm)
 device = rm.list_resources() #returns a tuple of the connected instruments
 print(device)
 #maybe add a line to verify the if ""== "main": ??
 
 
-SI = rm.open_resource(device[0]) #opens COM22 an assigns it as a serial port, "ASRL".. creates a PyVisa object.
+SI = rm.open_resource(device[1]) #opens GPIB port and assigns the instrument in address 5 to an pyvisa object
+print(len(device)) #prints the number of devices connected to the laptop
 
 print(SI) #prints the type of item this program creates
 
-#below this line is all the commands used to make the instrument do things, well cause error if python cannot communicate with the device
+SI.write('*IDN?')
+time.sleep(1)
+name = SI.read()
+print(name)
+
+# SI.write('SI:MENU')
+time.sleep(1)
+
+
+SI.write('SI:CONFIG4:CH1')
+# SI.write('MC:GO+020:CH1')
+# print(SI.query('MC:PP:CH1'))
+# SI.write('SI:CONFIG5:CH2')
+# SI.write('SI:MODULE')
+# SI.query('SI:Q:CH1')
+# SI.write('SI:CH1')
+
+#below this line is all the commands used to make the instrument do things, will cause error if python cannot communicate with the device
 ############################################################################
 
 # SI.write('*IDN?')
 
+#for some reason this now gives an error?
+
 # SI.query('*IDN?')
 # SI.query('*RST') #resets the device
 
-
-SI.query('SI:MODULE')
+# SI.query('SI:MODULE')
 # SI.query('SI:MENU')
+
+# SI.write('*IDN?\n')
+# time.sleep(1)
+# print(SI.read())
 
 # print(SI.query('*IDN?'))
 #
@@ -46,4 +71,3 @@ SI.query('SI:MODULE')
 
 #just making sure this works, original running test code.
 # print(dir(visa))
-# print(rm)::INSTR')
